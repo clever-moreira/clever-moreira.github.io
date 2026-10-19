@@ -1,0 +1,28 @@
+name: Demo projects checks
+
+on:
+  push:
+    paths:
+      - "labs/**"
+      - ".github/workflows/labs-ci.yml"
+  pull_request:
+    paths:
+      - "labs/**"
+      - ".github/workflows/labs-ci.yml"
+
+jobs:
+  python-examples:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Unit tests - resilient RPA
+        run: |
+          cd labs/resilient-rpa
+          python -m unittest discover -s tests -v
+      - name: Check SQL reporting
+        run: python labs/operational-analytics/run.py
+      - name: Check Python syntax
+        run: python -m compileall -q labs
