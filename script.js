@@ -1,0 +1,1 @@
+document.getElementById('year')?.replaceChildren(document.createTextNode(new Date().getFullYear()));document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',()=>document.querySelector('.nav-links')?.classList.remove('open')));
