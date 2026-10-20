@@ -27,14 +27,14 @@ const CUES = {
   geral:"Ajude o visitante a descobrir algo concreto sobre Clever, sem recitar todo o currículo. Escolha um aspecto da atuação, explique com naturalidade e avance a conversa."
 };
 const SUGGESTIONS = {
-  rpa:["Como ele lida com falhas em automações?", "Você pode mostrar um exemplo de RPA em Python?"],
-  erp:["O que ele considera ao integrar um ERP?", "Mostre um exemplo de API corporativa."],
-  dados:["Como ele monitora resultados dos robôs?", "Qual projeto público mostra indicadores?"],
-  processos:["Como ele desenha um fluxo de aprovação complexo?", "Onde entra o Zeev nos projetos?"],
-  ia:["Como o Clever AI foi construído?", "Como ele combina IA com automação?"],
-  pessoal:["O que a música ensina sobre trabalho em equipe?", "Como ele aproveita o tempo fora do trabalho?"],
-  perfil:["Em que tipo de desafio Clever se destaca?", "Como ele conecta arquitetura e execução?"],
-  geral:["Como Clever usa Python no trabalho?", "Qual projeto você recomenda conhecer primeiro?"]
+  rpa:["Como ele lida com falhas em automações?", "Você pode mostrar um exemplo de RPA em Python?", "Que decisões ele toma antes de automatizar?", "Como funciona a idempotência nos robôs?"],
+  erp:["O que ele considera ao integrar um ERP?", "Mostre um exemplo de API corporativa.", "Como lidar com falhas entre sistemas?", "Quais tecnologias ele utiliza na integração?"],
+  dados:["Como ele monitora resultados dos robôs?", "Qual projeto público mostra indicadores?", "O que ele considera uma boa métrica?", "Como SQL e Python entram nessa análise?"],
+  processos:["Como ele desenha um fluxo de aprovação complexo?", "Onde entra o Zeev nos projetos?", "Como evitar retrabalho num BPMS?", "Como ele trata exceções do processo?"],
+  ia:["Como o Clever AI foi construído?", "Como ele combina IA com automação?", "Onde faz sentido usar agentes de IA?", "Como proteger integrações com modelos?"],
+  pessoal:["O que a música ensina sobre trabalho em equipe?", "Como ele aproveita o tempo fora do trabalho?", "Como a guitarra entrou na vida dele?", "Ele também gosta de desafios fora da tecnologia?"],
+  perfil:["Em que tipo de desafio Clever se destaca?", "Como ele conecta arquitetura e execução?", "O que diferencia sua abordagem?", "Como ele se posiciona como especialista?"],
+  geral:["Como Clever usa Python no trabalho?", "Qual projeto você recomenda conhecer primeiro?", "Como ele aborda um projeto complexo?", "Qual é sua experiência com ERPs?"]
 };
 const TOPIC_PROJECT = {rpa:["rpa"],erp:["erp"],dados:["dados"],processos:["erp"],ia:[],pessoal:[],perfil:[],geral:[]};
 const softFollowUp=/^(e\b|ent[aã]o|mas\b|por qu[eê]|como assim|e nisso|e nesse|e isso|tamb[eé]m|me explica|pode detalhar|conte mais|qual deles)/i;
@@ -50,10 +50,14 @@ export function conversationRoute(messages) {
   }
   topic ||= "geral";
   const simplyAcknowledging=courtesy.test(latest);
+  const options = SUGGESTIONS[topic]||SUGGESTIONS.geral;
+  const offset = (visitor.length-1) % options.length;
+  const suggestions = [...options.slice(offset),...options.slice(0,offset)]
+    .filter(q=>!visitor.some(m=>m.content.toLocaleLowerCase("pt-BR").trim()===q.toLocaleLowerCase("pt-BR").trim())).slice(0,2);
   return {
     topic,
     instruction:CUES[topic],
     projects:simplyAcknowledging?[]:(TOPIC_PROJECT[topic]||[]).map(id=>PROJECTS[id]),
-    suggestions:simplyAcknowledging?[]:SUGGESTIONS[topic]
+    suggestions:simplyAcknowledging?[]:suggestions
   };
 }
