@@ -72,8 +72,8 @@ export default {
       const messages = normalizeMessages(JSON.parse(raw));
       if (!env.AI) return json({ error: "ai_binding_missing" }, 503, origin);
       const route = conversationRoute(messages);
-      const contextMessage = { role: "system", content: "ORIENTAÇÃO PARA ESTA RESPOSTA: " + route.instruction + " Fale como quem conhece bem o modo de trabalhar de Clever, sem fingir convívio pessoal." };
-      const result = await env.AI.run(MODEL, { messages: [{ role: "system", content: SYSTEM }, contextMessage, ...messages], max_tokens: 430, temperature: 0.45 });
+      const contextualSystem = SYSTEM + "\n\nORIENTAÇÃO PARA ESTA RESPOSTA: " + route.instruction;
+      const result = await env.AI.run(MODEL, { messages: [{ role: "system", content: contextualSystem }, ...messages], max_tokens: 430, temperature: 0.45 });
       const answer = typeof result?.response === "string" ? result.response.trim() : "";
       if (!answer) return json({ error: "empty_model_response" }, 502, origin);
       return json({ answer: answer.slice(0, 3500), projects: route.projects, suggestions: route.suggestions, model: "workers-ai" }, 200, origin);
