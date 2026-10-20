@@ -8,3 +8,6 @@
 
 /* Continuidade contextual do Clever AI */
 .ai-followups{align-self:flex-start;display:flex;gap:8px;flex-wrap:wrap;max-width:95%;margin:0 0 7px 2px}.ai-followups>span{flex-basis:100%;font-size:.75rem;color:#98c9c5}.ai-followups button{border:1px solid #467469;color:#d2f2e9;background:#16343f;padding:8px 12px;border-radius:18px;font-size:.78rem;text-align:left;cursor:pointer;transition:background .2s,border-color .2s}.ai-followups button:hover{background:#245155;border-color:#81e5cc}.ai-followups button:focus-visible{outline:2px solid #98f3dd;outline-offset:2px}@media print{.ai-followups{display:none}}
+
+/* Gostos pessoais, sem uso de logos ou imagens de franquias */
+.fandom-strip{margin:8px 0 30px;padding:19px 22px;background:#102334;border:1px solid #345565;border-radius:14px}.fandom-strip>.eyebrow{display:block;margin-bottom:12px}.fandom-tags{display:flex;flex-wrap:wrap;gap:8px}.fandom-tags span{display:inline-flex;align-items:center;border:1px solid #3f6b70;border-radius:999px;padding:6px 13px;background:#172e40;color:#d8e9ec;font-size:.79rem;line-height:1.5}@media(max-width:680px){.fandom-strip{padding:16px}.fandom-tags{gap:7px}.fandom-tags span{font-size:.75rem;padding:5px 10px}}@media print{.fandom-strip{background:#fff;border:1px solid #c5d3d6}.fandom-tags span{background:#fff;color:#243643;border:1px solid #a7bbc5}}
