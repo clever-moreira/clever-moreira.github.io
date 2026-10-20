@@ -13,7 +13,7 @@ const TOPICS = [
   { id:"dados", regex:/power.?bi|relat[oó]rio|dados|indicador|dashboard|databricks|sql|banco de dados|m[eé]trica|observabil|painel/i },
   { id:"processos", regex:/bpms|bpmn|zeev|fluig|sydle|workflow|fluxo|processos?|aprova[cç][aã]o/i },
   { id:"ia", regex:/intelig[eê]ncia artificial|agente|llm|\bia\b|chatbot|machine learning|modelo de linguagem/i },
-  { id:"pessoal", regex:/hobb|m[uú]sica|guitarra|games?|jogo|trilha|viaj|livros?|filmes?|fora do trabalho|pessoal/i },
+  { id:"pessoal", regex:/hobb|m[uú]sica|guitarra|games?|jogo|trilha|viaj|livros?|filmes?|fora do trabalho|pessoal|batman|homem[ -]?aranha|deadpool|senhor dos an[eé]is|star wars|diablo|dungeons\s*(?:&|and|e)\s*dragons|d\s*&\s*d|rpg\s*(?:de mesa)?|tabuleiro/i },
   { id:"perfil", regex:/perfil|quem [eé]|sobre (ele|clever)|trajet[oó]ria|carreira|experi[eê]ncia|trabalh(a|o|ou)|estilo|lideran[cç]a|especialista/i }
 ];
 const CUES = {
@@ -22,7 +22,7 @@ const CUES = {
   dados:"Explique como indicadores ajudam a acompanhar execução, exceções e evolução. Aponte o exemplo público Operational Analytics quando ele ajudar a ilustrar.",
   processos:"Converse sobre fluxos com aprovações, regras condicionais, formulários e reprocessos. Conecte com a capacidade de Clever de traduzir problema de negócio em processo executável.",
   ia:"Fale de agentes, LLMs e integração de IA com processos de negócio sem prometer funcionalidades ou resultados não comprovados. O próprio Clever AI é demonstração de integração entre interface, Worker e modelo.",
-  pessoal:"Seja leve: guitarra, música, liderança musical, jogos, trilhas, viagens e histórias. Faça uma conexão orgânica com colaboração ou curiosidade, mas não converta hobby em discurso corporativo.",
+  pessoal:"Seja leve e conhecedor dos gostos do Clever: guitarra, música, liderança musical, Batman, Homem-Aranha, Deadpool, O Senhor dos Anéis, Star Wars, Diablo, Dungeons & Dragons, jogos de tabuleiro, viagens e trilhas. Use detalhes e referências naturalmente quando o visitante trouxer esses assuntos, sem inventar preferências específicas, personagens de RPG ou experiências de campanhas e sem sempre puxar a conversa para o trabalho.",
   perfil:"Destaque perfil técnico e visão ponta a ponta. Clever transita entre conversar com negócio, desenhar solução, programar e sustentar; evite repetir um resumo de LinkedIn.",
   geral:"Ajude o visitante a descobrir algo concreto sobre Clever, sem recitar todo o currículo. Escolha um aspecto da atuação, explique com naturalidade e avance a conversa."
 };
@@ -32,7 +32,7 @@ const SUGGESTIONS = {
   dados:["Como ele monitora resultados dos robôs?", "Qual projeto público mostra indicadores?", "O que ele considera uma boa métrica?", "Como SQL e Python entram nessa análise?"],
   processos:["Como ele desenha um fluxo de aprovação complexo?", "Onde entra o Zeev nos projetos?", "Como evitar retrabalho num BPMS?", "Como ele trata exceções do processo?"],
   ia:["Como o Clever AI foi construído?", "Como ele combina IA com automação?", "Onde faz sentido usar agentes de IA?", "Como proteger integrações com modelos?"],
-  pessoal:["O que a música ensina sobre trabalho em equipe?", "Como ele aproveita o tempo fora do trabalho?", "Como a guitarra entrou na vida dele?", "Ele também gosta de desafios fora da tecnologia?"],
+  pessoal:["O Clever também curte D&D e jogos de tabuleiro?", "Quais universos de filmes e heróis ele gosta?", "Ele gosta da franquia Diablo?", "Qual é a relação dele com música e guitarra?", "O que ele gosta de fazer fora do trabalho?"],
   perfil:["Em que tipo de desafio Clever se destaca?", "Como ele conecta arquitetura e execução?", "O que diferencia sua abordagem?", "Como ele se posiciona como especialista?"],
   geral:["Como Clever usa Python no trabalho?", "Qual projeto você recomenda conhecer primeiro?", "Como ele aborda um projeto complexo?", "Qual é sua experiência com ERPs?"]
 };
