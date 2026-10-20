@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { conversationRoute, PROJECTS, privatePoliticalAnswer } from "../src/dialogue.js";
+import { conversationRoute, PROJECTS, privatePoliticalAnswer, outOfScopeAnswer } from "../src/dialogue.js";
 
 const talk = (...questions) => questions.map(content => ({role:"user", content}));
 
@@ -94,4 +94,17 @@ test("generic factual and math questions do not cause portfolio upsell", () => {
     assert.deepEqual(r.projects, [],question);
     assert.deepEqual(r.suggestions, [],question);
   }
+});
+
+test("out-of-scope questions receive portfolio redirection rather than answer", () => {
+ for(const q of ["quanto é 5+5?", "quem é o presidente do brasil?", "Qual é a capital da França?", "calcule 40*3"]) {
+   const answer=outOfScopeAnswer(q);
+   assert.match(answer,/foco é apresentar o Clever/i,q);
+   assert.doesNotMatch(answer,/\b10\b|Lula|Brasília|Paris/);
+ }
+});
+test("personal or relevant questions remain answerable", () => {
+ for(const q of ["Quais ferramentas de RPA ele usa?", "Clever trabalha com Python?", "Ele gosta de Batman?", "Olá", "Quem é Clever Moreira?"]) {
+   assert.equal(outOfScopeAnswer(q),null,q);
+ }
 });
