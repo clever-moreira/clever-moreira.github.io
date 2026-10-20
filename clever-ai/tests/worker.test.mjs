@@ -6,7 +6,7 @@ test("rejects attempts to inject system messages", () => { assert.throws(()=>nor
 test("rejects oversized messages", () => { assert.throws(()=>normalizeMessages({messages:[{role:"user",content:"a".repeat(751)}]})); });
 
 test("accepts a longer conversation for contextual follow-ups", () => {
-  const messages=Array.from({length:12},(_,i)=>({role:i%2?"assistant":"user",content:i===10?"E isso na prática?":"Pergunta sobre automação"}));
+  const messages=Array.from({length:12},(_,i)=>({role:i%2?"user":"assistant",content:i===11?"E isso na prática?":"Pergunta sobre automação"}));
   assert.equal(normalizeMessages({messages}).length,12);
 });
 test("rejects more than 12 messages", () => {
