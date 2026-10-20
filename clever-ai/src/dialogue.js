@@ -24,7 +24,7 @@ const CUES = {
   ia:"Fale de agentes, LLMs e integração de IA com processos de negócio sem prometer funcionalidades ou resultados não comprovados. O próprio Clever AI é demonstração de integração entre interface, Worker e modelo.",
   pessoal:"Seja leve e conhecedor dos gostos do Clever: guitarra, música, liderança musical, Batman, Homem-Aranha, Deadpool, O Senhor dos Anéis, Star Wars, Diablo, Dungeons & Dragons, jogos de tabuleiro, viagens e trilhas. Use detalhes e referências naturalmente quando o visitante trouxer esses assuntos, sem inventar preferências específicas, personagens de RPG ou experiências de campanhas e sem sempre puxar a conversa para o trabalho.",
   perfil:"Destaque perfil técnico e visão ponta a ponta. Clever transita entre conversar com negócio, desenhar solução, programar e sustentar; evite repetir um resumo de LinkedIn.",
-  geral:"Ajude o visitante a descobrir algo concreto sobre Clever, sem recitar todo o currículo. Escolha um aspecto da atuação, explique com naturalidade e avance a conversa."
+  geral:"Responda normalmente a perguntas de conhecimento geral, matemática e conversa casual, sem puxar artificialmente o assunto para o portfólio. Sobre fatos recentes ou cargos políticos atuais sem verificação em tempo real, explicite a limitação temporal com precisão. Se perguntarem se Clever sabe algo, diferencie o conhecimento dele das limitações do assistente; não presuma o que Clever sabe ou desconhece."
 };
 const SUGGESTIONS = {
   rpa:["Como ele lida com falhas em automações?", "Você pode mostrar um exemplo de RPA em Python?", "Que decisões ele toma antes de automatizar?", "Como funciona a idempotência nos robôs?"],
@@ -64,6 +64,8 @@ export function conversationRoute(messages) {
   }
   topic ||= "geral";
   const simplyAcknowledging=courtesy.test(latest);
+  const generalConversation=topic==="geral" && /\\b(?:presidente|brasil|mundo|atual|hoje|not[ií]cia|quem governa|quem ganhou|pol[ií]tica|\\d+\\s*[+*\\/-]\\s*\\d+|quanto [eé]|pr[oó]xima pergunta|vamos l[aá]|o clever n[aã]o sabe|responda.*como se fosse|fale como se fosse)\\b/i.test(latest);
+  const unrelatedFollowup=topic==="geral" && /^(?:o clever n[aã]o sabe|e ele n[aã]o sabe|por que n[aã]o sabe)/i.test(latest);
   const options = SUGGESTIONS[topic]||SUGGESTIONS.geral;
   const offset = (visitor.length-1) % options.length;
   const suggestions = [...options.slice(offset),...options.slice(0,offset)]
@@ -71,7 +73,7 @@ export function conversationRoute(messages) {
   return {
     topic,
     instruction:CUES[topic],
-    projects:simplyAcknowledging?[]:(TOPIC_PROJECT[topic]||[]).map(id=>PROJECTS[id]),
-    suggestions:simplyAcknowledging?[]:suggestions
+    projects:(simplyAcknowledging||generalConversation||unrelatedFollowup)?[]:(TOPIC_PROJECT[topic]||[]).map(id=>PROJECTS[id]),
+    suggestions:(simplyAcknowledging||generalConversation||unrelatedFollowup)?[]:suggestions
   };
 }
