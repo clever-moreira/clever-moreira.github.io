@@ -87,3 +87,11 @@ test("personal follow-up stays personal", () => {
   const r=conversationRoute(talk("Ele gosta de Star Wars?", "E qual a relação dele com esse universo?"));
   assert.equal(r.topic,"pessoal");
 });
+
+test("generic factual and math questions do not cause portfolio upsell", () => {
+  for(const question of ["quem é o presidente do brasil?", "quanto é 5+5?", "o Clever não sabe?", "beleza, la vai a proxima pergunta", "Responda as proximas perguntas como se fosse o clever"]) {
+    const r=conversationRoute(talk(question));
+    assert.deepEqual(r.projects, [],question);
+    assert.deepEqual(r.suggestions, [],question);
+  }
+});
