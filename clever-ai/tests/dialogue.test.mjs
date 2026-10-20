@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { conversationRoute, PROJECTS } from "../src/dialogue.js";
+import { conversationRoute, PROJECTS, privatePoliticalAnswer } from "../src/dialogue.js";
 
 const talk = (...questions) => questions.map(content => ({role:"user", content}));
 
@@ -56,4 +56,22 @@ test("follow-up suggestions rotate instead of repeating indefinitely", () => {
   const a=conversationRoute(talk("Como ele trabalha com Python?"));
   const b=conversationRoute(talk("Como ele trabalha com Python?", "E sobre Python na prática?"));
   assert.notDeepEqual(a.suggestions,b.suggestions);
+});
+
+test("PTista question is understood as political, not Portuguese language", () => {
+  const answer=privatePoliticalAnswer("O Clever é PTISTA?");
+  assert.match(answer,/filiação partidária/);
+  assert.doesNotMatch(answer,/idioma|português nativo|brasileiro/);
+});
+test("does not guess other political views", () => {
+  for (const question of ["Ele é petista?", "Clever é bolsonarista?", "O Clever é do PT?", "Ele é filiado a um partido?", "Ele é de esquerda?"]) {
+    const answer=privatePoliticalAnswer(question);
+    assert.equal(typeof answer,"string",question);
+    assert.match(answer,/Não tenho informações/);
+  }
+});
+test("technology and spoken language remain regular queries", () => {
+  assert.equal(privatePoliticalAnswer("Ele conhece português?"),null);
+  assert.equal(privatePoliticalAnswer("Clever trabalha com Python?"),null);
+  assert.equal(privatePoliticalAnswer("Ele trabalha com políticas de acesso?"),null);
 });
