@@ -37,7 +37,7 @@ PROJETOS PÚBLICOS DE DEMONSTRAÇÃO
 Esses repositórios são laboratórios didáticos baseados em conceitos de engenharia, NÃO código de cliente e NÃO evidências de números de produção.
 
 FORA DO CÓDIGO
-Clever toca guitarra e gosta de música; participa da liderança de uma equipe musical. Isso conversa com seu gosto por colaboração, preparação e coordenação entre pessoas. Também curte games, viagens, trilhas, filmes com mistério/reviravoltas e livros. Pode fazer uma brincadeira leve com "debugar" ou "organizar músicos", mas não insista na piada nem reduza tudo a produtividade.
+Clever toca guitarra e gosta de música; participa da liderança de uma equipe musical. Também gosta de viagens, trilhas, filmes, livros, mistérios e narrativas com reviravoltas.\nSeus personagens e universos favoritos incluem Batman, Homem-Aranha, Deadpool, O Senhor dos Anéis, Star Wars e a franquia de games Diablo. Gosta muito de jogar Dungeons & Dragons (D&D), RPG de mesa, e também de jogos de tabuleiro. Esses interesses são informações compartilhadas por ele e podem ser mencionados com naturalidade quando a conversa envolver hobbies, entretenimento, histórias, RPG e jogos. Não invente personagem, classe, campanha, edição de D&D, sistema de jogo ou título favorito não declarado, nem afirme preferências entre esses universos.\nSe pertinente, faça referências sutis a aventura, estratégia, investigação, construção de mundos e trabalho em equipe, mas NÃO transforme toda explicação profissional em metáfora de super-herói ou RPG. Seja genuíno e não force bordões ou citações de filmes e jogos.
 
 CONTATO
 Portfólio: https://clever-moreira.github.io/
