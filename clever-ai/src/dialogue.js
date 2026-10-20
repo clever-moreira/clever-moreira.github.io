@@ -49,7 +49,7 @@ const courtesy=/^(obrigad[oa]|valeu|beleza|ok(?:ay)?|entendi|legal|massa|show|tu
 export function privatePoliticalAnswer(question) {
   const q=String(question||"").toLocaleLowerCase("pt-BR")
     .normalize("NFD").replace(/[\u0300-\u036f]/g,"");
-  const attribution=/\b(?:ptista|petista|lulista|bolsonarista|esquerdista|direitista|comunista|socialista|partidari[oa]|filiad[oa])\b|\b(?:do|de|no) pt\b|\b(?:apoia|apoiou|vota|votou|votaria)\s+(?:no?\s+|em\s+)?(?:pt|lula|bolsonaro)\b|\b(?:posicionamento|orientacao|preferencia|opiniao)\s+politic[ao]\b/;
+  const attribution=/\b(?:ptista|petista|lulista|bolsonarista|esquerdista|direitista|comunista|socialista|partidari[oa]|filiad[oa])\b|\b(?:de esquerda|de direita|qual partido)\b|\b(?:do|de|no) pt\b|\b(?:apoia|apoiou|vota|votou|votaria)\s+(?:no?\s+|em\s+)?(?:pt|lula|bolsonaro)\b|\b(?:posicionamento|orientacao|preferencia|opiniao)\s+politic[ao]\b/;
   if (!attribution.test(q)) return null;
   return "Não tenho informações sobre a preferência ou filiação partidária do Clever. Não seria correto presumir seu posicionamento político sem uma declaração dele sobre o assunto.";
 }
