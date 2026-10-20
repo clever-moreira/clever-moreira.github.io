@@ -1,1 +1,8 @@
-{ "name": "clever-ai-portfolio", "main": "src/index.js", "compatibility_date": "2026-09-01", "ai": { "binding": "AI" } }
+{
+  "name": "clever-ai",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-01",
+  "ai": {
+    "binding": "AI"
+  }
+}
