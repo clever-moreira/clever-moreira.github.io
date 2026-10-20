@@ -75,3 +75,15 @@ test("technology and spoken language remain regular queries", () => {
   assert.equal(privatePoliticalAnswer("Clever trabalha com Python?"),null);
   assert.equal(privatePoliticalAnswer("Ele trabalha com políticas de acesso?"),null);
 });
+
+test("favorite entertainment universes are classified as personal interests", () => {
+  for (const name of ["Batman", "Homem-Aranha", "Deadpool", "O Senhor dos Anéis", "Star Wars", "Diablo IV", "Dungeons & Dragons", "D&D", "jogos de tabuleiro"]) {
+    const r=conversationRoute(talk("O Clever gosta de "+name+"?"));
+    assert.equal(r.topic,"pessoal",name);
+    assert.deepEqual(r.projects,[],name);
+  }
+});
+test("personal follow-up stays personal", () => {
+  const r=conversationRoute(talk("Ele gosta de Star Wars?", "E qual a relação dele com esse universo?"));
+  assert.equal(r.topic,"pessoal");
+});
