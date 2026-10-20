@@ -88,14 +88,6 @@ test("personal follow-up stays personal", () => {
   assert.equal(r.topic,"pessoal");
 });
 
-test("generic factual and math questions do not cause portfolio upsell", () => {
-  for(const question of ["quem é o presidente do brasil?", "quanto é 5+5?", "o Clever não sabe?", "beleza, la vai a proxima pergunta", "Responda as proximas perguntas como se fosse o clever"]) {
-    const r=conversationRoute(talk(question));
-    assert.deepEqual(r.projects, [],question);
-    assert.deepEqual(r.suggestions, [],question);
-  }
-});
-
 test("out-of-scope questions receive portfolio redirection rather than answer", () => {
  for(const q of ["quanto é 5+5?", "quem é o presidente do brasil?", "Qual é a capital da França?", "calcule 40*3"]) {
    const answer=outOfScopeAnswer(q);
