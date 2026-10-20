@@ -40,6 +40,20 @@ const TOPIC_PROJECT = {rpa:["rpa"],erp:["erp"],dados:["dados"],processos:["erp"]
 const softFollowUp=/^(e\b|ent[aã]o|mas\b|por qu[eê]|como assim|e nisso|e nesse|e isso|tamb[eé]m|me explica|pode detalhar|conte mais|qual deles)/i;
 const courtesy=/^(obrigad[oa]|valeu|beleza|ok(?:ay)?|entendi|legal|massa|show|tudo bem)[!.\s]*$/i;
 
+/**
+ * Não deduz preferências ou filiação político-partidária a partir de
+ * nacionalidade, idioma, profissão, aparência ou outras características.
+ * Resposta determinística para evitar que um modelo pequeno confunda "PTista"
+ * (política) com "PT" (português).
+ */
+export function privatePoliticalAnswer(question) {
+  const q=String(question||"").toLocaleLowerCase("pt-BR")
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  const attribution=/\b(?:ptista|petista|lulista|bolsonarista|esquerdista|direitista|comunista|socialista|partidari[oa]|filiad[oa])\b|\b(?:do|de|no) pt\b|\b(?:apoia|apoiou|vota|votou|votaria)\s+(?:no?\s+|em\s+)?(?:pt|lula|bolsonaro)\b|\b(?:posicionamento|orientacao|preferencia|opiniao)\s+politic[ao]\b/;
+  if (!attribution.test(q)) return null;
+  return "Não tenho informações sobre a preferência ou filiação partidária do Clever. Não seria correto presumir seu posicionamento político sem uma declaração dele sobre o assunto.";
+}
+
 export function conversationRoute(messages) {
   const visitor = messages.filter(m=>m.role==="user");
   const latest = visitor.at(-1)?.content?.trim()||"";
