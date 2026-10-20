@@ -12,7 +12,7 @@ const TOPICS = [
   { id:"erp", regex:/erp|sap|totvs|senior|oracle|linx|integra[cç][aã]o|api\b|rest\b|fastapi|kafka|mensageria|sistema|arquitetura|microservi[cç]o/i },
   { id:"dados", regex:/power.?bi|relat[oó]rio|dados|indicador|dashboard|databricks|sql|banco de dados|m[eé]trica|observabil|painel/i },
   { id:"processos", regex:/bpms|bpmn|zeev|fluig|sydle|workflow|fluxo|processos?|aprova[cç][aã]o/i },
-  { id:"ia", regex:/intelig[eê]ncia artificial|agente|llm|ia\b|chatbot|machine learning|modelo de linguagem/i },
+  { id:"ia", regex:/intelig[eê]ncia artificial|agente|llm|\bia\b|chatbot|machine learning|modelo de linguagem/i },
   { id:"pessoal", regex:/hobb|m[uú]sica|guitarra|games?|jogo|trilha|viaj|livros?|filmes?|fora do trabalho|pessoal/i },
   { id:"perfil", regex:/perfil|quem [eé]|sobre (ele|clever)|trajet[oó]ria|carreira|experi[eê]ncia|trabalh(a|o|ou)|estilo|lideran[cç]a|especialista/i }
 ];
