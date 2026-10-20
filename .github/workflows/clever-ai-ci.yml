@@ -1,0 +1,28 @@
+name: Clever AI checks
+on:
+  push:
+    paths:
+      - "clever-ai/**"
+      - "ai-chat.js"
+      - ".github/workflows/clever-ai-ci.yml"
+  pull_request:
+    paths:
+      - "clever-ai/**"
+      - "ai-chat.js"
+      - ".github/workflows/clever-ai-ci.yml"
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check frontend syntax
+        run: node --check ai-chat.js
+      - name: Check backend syntax
+        run: node --check clever-ai/src/index.js
+      - name: Run dialogue and API tests
+        working-directory: clever-ai
+        run: node --test tests/*.test.mjs
