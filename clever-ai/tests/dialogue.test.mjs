@@ -47,3 +47,13 @@ test("recommendations point only to public labs", () => {
     assert.match(project.url,/^https:\/\/github\.com\/clever-moreira\/clever-moreira\.github\.io\/tree\/main\/labs\//);
   }
 });
+
+test("technology overview does not get misclassified as AI only", () => {
+  const r=conversationRoute(talk("Fale sobre a experiência dele em tecnologia."));
+  assert.equal(r.topic,"perfil");
+});
+test("follow-up suggestions rotate instead of repeating indefinitely", () => {
+  const a=conversationRoute(talk("Como ele trabalha com Python?"));
+  const b=conversationRoute(talk("Como ele trabalha com Python?", "E sobre Python na prática?"));
+  assert.notDeepEqual(a.suggestions,b.suggestions);
+});
