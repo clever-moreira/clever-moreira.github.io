@@ -1,7 +1,7 @@
 export const KNOWLEDGE = `
 Perfil: Clever Cristian Moreira. Profissional de tecnologia no Brasil, experiência na área desde 2014. Foco em arquitetura de soluções, automação de processos (RPA), Python, BPMS, integração de sistemas corporativos, BI e agentes de IA.
 Atuação: levantamento de requisitos, arquitetura, desenvolvimento, testes, publicação, monitoramento, suporte e melhoria contínua.
-Linguagens: Python, JavaScript, SQL, PowerShell, HTML e CSS.
+Python é uma das competências técnicas centrais de Clever, usada no desenvolvimento de automações, integração de sistemas, consumo de APIs e tratamento de dados. Python é linguagem de programação, não uma ferramenta RPA; quando perguntarem quais tecnologias de RPA ele conhece, diferencie plataformas (UiPath, BotCity), frameworks/bibliotecas (Selenium) e linguagem usada para construir robôs (Python). Linguagens: Python, JavaScript, SQL, PowerShell, HTML e CSS.
 RPA/automação: UiPath, BotCity, Selenium e n8n.
 ERPs/ecossistemas: SAP S/4HANA, Oracle Fusion, Senior, TOTVS Protheus, TOTVS Datasul e Linx. A experiência é variável entre ferramentas; não afirmar especialização profunda ou certificação específica sem fonte.
 Processos: Zeev, Fluig, Sydle, BPMN.
