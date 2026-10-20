@@ -57,8 +57,8 @@ export function privatePoliticalAnswer(question) {
 // Respostas curtas e deliberadas para assuntos externos ao escopo do portfólio.
 export function outOfScopeAnswer(question) {
   const q=String(question||"").toLocaleLowerCase("pt-BR").trim();
-  const mentionsClever=/\\b(?:clever|moreira|ele|dele|sua|seu)\\b/i.test(q);
-  const math=/(?:\\d+\\s*[+*\\/\\-]\\s*\\d+)|(?:quanto (?:e|é|vale|da|dá)\\s+\\d+)|(?:resolv[ae]|calcule|calcul[ae]|raiz quadrada|equac[aã]o|tabuada)/i.test(q);
+  const mentionsClever=/\b(?:clever|moreira|ele|dele|sua|seu)\b/i.test(q);
+  const math=/(?:\d+\s*[+*\/\-]\s*\d+)|(?:quanto (?:e|é|vale|da|dá)\s+\d+)|(?:resolv[ae]|calcule|calcul[ae]|raiz quadrada|equac[aã]o|tabuada)/i.test(q);
   const publicFacts=/(?:quem (?:e|é|foi|sera|será) (?:o |a )?(?:presidente|governador|ministro)|presidente d[oa] brasil|capital d[oea]|que horas (?:s[aã]o|e|é)|previs[aã]o do tempo|cotac[aã]o d[oa]|resultado d[oa] jogo|not[ií]cias? (?:de |do |da )?hoje)/i.test(q);
   if ((math || publicFacts) && !mentionsClever) {
     return "Boa pergunta, mas por aqui meu foco é apresentar o Clever, seus projetos e os assuntos que fazem parte da trajetória dele. Quer explorar alguma dessas áreas?";
