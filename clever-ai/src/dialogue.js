@@ -84,6 +84,6 @@ export function conversationRoute(messages) {
     topic,
     instruction:CUES[topic],
     projects:simplyAcknowledging?[]:(TOPIC_PROJECT[topic]||[]).map(id=>PROJECTS[id]),
-    suggestions:(simplyAcknowledging||generalConversation||unrelatedFollowup)?[]:suggestions
+    suggestions:simplyAcknowledging?[]:suggestions
   };
 }
