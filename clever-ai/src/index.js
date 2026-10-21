@@ -69,6 +69,25 @@ export default {
     if (request.method === "OPTIONS")
       return new Response(null, { status: 204, headers: { "access-control-allow-origin": ORIGIN, "access-control-allow-methods": "POST, OPTIONS", "access-control-allow-headers": "content-type", "access-control-max-age": "600" } });
     if (request.method !== "POST") return json({ error: "method_not_allowed" }, 405, origin);
+    // CORS/Origin protects browser integrations, not non-browser HTTP clients.
+    // Enforce consumption limits independently of the request Origin.
+    if (!env.CHAT_RATE_LIMITER || !env.CHAT_GLOBAL_LIMITER)
+      return json({ error: "security_configuration_missing" }, 503, origin);
+    const contentType = request.headers.get("content-type") || "";
+    if (!/^application\/json(?:\s*;|\s*$)/i.test(contentType))
+      return json({ error: "unsupported_media_type" }, 415, origin);
+    try {
+      const clientKey = (request.headers.get("cf-connecting-ip") || "unknown").slice(0, 64);
+      const [individual, overall] = await Promise.all([
+        env.CHAT_RATE_LIMITER.limit({ key: "chat:" + clientKey }),
+        env.CHAT_GLOBAL_LIMITER.limit({ key: "chat:global" })
+      ]);
+      if (!individual.success || !overall.success)
+        return json({ error: "rate_limited" }, 429, origin);
+    } catch {
+      // Never allow unrestricted inference if the limiter is unavailable.
+      return json({ error: "security_service_unavailable" }, 503, origin);
+    }
     if ((Number(request.headers.get("content-length")) || 0) > 14000) return json({ error: "payload_too_large" }, 413, origin);
     try {
       const raw = await request.text();

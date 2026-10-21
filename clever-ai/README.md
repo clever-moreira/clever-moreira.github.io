@@ -72,3 +72,19 @@ O frontend mantém o histórico durante a sessão de navegação e o encaminha c
 Os próximos pontos de atenção são aprimorar os testes de qualidade das respostas, fortalecer limites de consumo, observar falhas sem armazenar conteúdo desnecessário das conversas e tornar as recomendações de projetos mais consistentes.
 
 O assistente é uma camada de apresentação do portfólio, não um canal oficial de atendimento nem uma fonte independente de comprovação de experiência.
+
+## Controles de consumo e validação da implantação
+
+O Worker define dois limites no `wrangler.jsonc`: **8 solicitações por minuto por endereço de origem observado pelo Cloudflare** e **120 solicitações por minuto por localização Cloudflare**, para a rota de conversa. A limitação por endereço pode impactar usuários que compartilham o mesmo IP. Os limites são aplicados antes da chamada ao modelo; requisições acima do limite recebem HTTP `429`.
+
+Os contadores do binding de Rate Limiting são locais à infraestrutura de cada localização Cloudflare e podem apresentar consistência eventual. Por isso, não representam uma cota global exata nem substituem regras de WAF e proteção contra bots. Os `namespace_id` definidos são identificadores de configuração da conta, não credenciais.
+
+Se os bindings não estiverem presentes ou falharem, o endpoint de chat retorna HTTP `503` para não executar inferência sem controle. **Faça primeiro a validação em ambiente de teste e só então publique o Worker.** A configuração do GitHub Pages não depende desses bindings.
+
+Após implantar, valide os cenários: resposta válida, rejeição HTTP `415` para corpo sem JSON, rejeição `403` para origem não autorizada, `429` sob abuso e `503` quando os limitadores não estiverem disponíveis. O endpoint `/health` continua disponível para diagnóstico.
+
+As regras de Origin/CORS limitam o uso por navegadores, mas não são autenticação: clientes HTTP conseguem enviar esse cabeçalho manualmente. Para restringir de fato o uso por identidade, será necessário introduzir autenticação ou uma estratégia de proteção e identificação de sessão.
+
+## Varredura de segredos
+
+O workflow `.github/workflows/security.yml` executa uma verificação com Gitleaks em commits e pull requests. Caso encontre uma credencial válida, revogue-a e gere outra antes de tratar a exposição histórica. Apagar o texto de um arquivo atual não elimina sua presença em commits antigos.
