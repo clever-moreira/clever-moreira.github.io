@@ -1,63 +1,74 @@
-# Clever AI — assistente profissional
+# Clever AI | Assistente do portfólio
 
-Assistente virtual integrado ao currículo público em **GitHub Pages**, usando **Cloudflare Workers + Workers AI (Llama 3.1 8B FP8)**. O modelo não depende de uma assinatura ChatGPT Plus.
+O Clever AI é o assistente integrado ao meu portfólio. Sua função é facilitar a exploração da minha trajetória, das competências técnicas e dos laboratórios disponíveis, sem transformar a página em um chatbot de assuntos gerais.
 
-## O que o assistente faz
+A solução separa a interface estática, hospedada no GitHub Pages, do serviço de conversação executado em Cloudflare Workers com Workers AI. A configuração do Worker utiliza o binding `AI` e o modelo de linguagem selecionado no backend.
 
-- Responde naturalmente em português (ou inglês, conforme o visitante) com base em uma **base pública curada por Clever**.
-- Mantém o contexto de até 12 mensagens recentes e entende perguntas de continuação.
-- Distingue plataformas de RPA, bibliotecas de automação e linguagens como Python.
-- Relaciona competências a experiências generalizadas, sem identificar clientes.
-- Sugere próximas perguntas relevantes e mostra links para laboratórios públicos quando o assunto corresponde ao projeto.
-- Evita repetir o mesmo projeto durante uma conversa e não inventa métricas de resultados.
+## Responsabilidades
 
-O assistente **não é o próprio Clever**: ele conversa como um guia que conhece as experiências compartilhadas para o portfólio, sem alegar convívio pessoal ou acesso a informações privadas.
+O assistente recebe perguntas sobre as experiências e tecnologias apresentadas no portfólio, utiliza uma base pública de conhecimento e pode recomendar materiais relacionados ao assunto da conversa. O objetivo não é responder a qualquer pergunta, e sim oferecer uma navegação conversacional pelo conteúdo profissional.
 
-## Estrutura
+A aplicação foi estruturada para:
+- manter contexto de mensagens recentes;
+- relacionar competências, experiências e projetos demonstrativos;
+- conduzir respostas em português ou inglês conforme a interação;
+- limitar recomendações repetidas durante a conversa;
+- evitar informações internas, métricas não documentadas e afirmações que não estejam sustentadas pela base disponível.
 
-- `src/index.js`: Cloudflare Worker, API e prompt de sistema.
-- `src/knowledge.js`: base profissional pública, narrativas anônimas, tecnologias e hobbies.
-- `src/dialogue.js`: roteamento contextual, recomendações de projetos e perguntas sugeridas.
-- `tests/*.test.mjs`: testes de validação e continuidade.
-- `wrangler.jsonc`: binding de Workers AI.
-- `../ai-config.js`: endereço público do endpoint.
-- `../ai-chat.js`: frontend do chat e experiência de diálogo.
-- `../styles.css`: estilos do portfólio e do chat.
+Como em qualquer sistema com modelo generativo, esses comportamentos dependem do código de controle e do modelo utilizado. Não devem ser tratados como garantia de respostas sempre corretas.
 
-## Publicação
+## Componentes
 
-A Cloudflare já está configurada com o Worker `clever-ai`, integrado ao GitHub. Mantenha o comando de implantação:
+| Arquivo | Responsabilidade |
+| --- | --- |
+| `src/index.js` | Endpoint HTTP, validação de entradas e chamada ao modelo |
+| `src/knowledge.js` | Conteúdo profissional disponibilizado ao assistente |
+| `src/dialogue.js` | Regras de condução de conversa e recomendações |
+| `tests/` | Testes automatizados do serviço e das regras de diálogo |
+| `wrangler.jsonc` | Configuração do Cloudflare Worker e binding de IA |
+| `../ai-config.js` | URL pública consumida pela interface |
+| `../ai-chat.js` | Renderização das mensagens e interação com o visitante |
+| `../styles.css` | Estilos da interface do portfólio e do chat |
 
-```bash
-cd clever-ai && npx wrangler deploy
-```
+A URL do serviço fica configurada no frontend, mas chamadas ao provedor e políticas de acesso pertencem ao backend. Credenciais e segredos não devem ser colocados em arquivos JavaScript públicos.
 
-O serviço disponibiliza `GET /health` e `POST /api/chat`, este último acessado pelo frontend no domínio do portfólio.
+## Executar verificações
 
-O binding `AI` é declarado em `wrangler.jsonc`; não use credenciais de API no JavaScript público.
+O projeto utiliza Node.js e o Wrangler, declarado em `package.json`.
 
-## Testes locais
-
-Com Node.js 22+ na pasta `clever-ai`:
+Na pasta `clever-ai`:
 
 ```bash
-node --test tests/*.test.mjs
+npm install
+npm test
 node --check src/index.js
 node --check src/dialogue.js
 node --check ../ai-chat.js
 ```
 
-Há também um workflow de GitHub Actions configurado para executar as verificações após alterações.
+Os testes automatizados também fazem parte do fluxo de validação via GitHub Actions.
 
-## Privacidade e limites
+## Publicar o Worker
 
-- As experiências profissionais são **anônimas e qualitativas**; projetos públicos são laboratórios demonstrativos com dados fictícios.
-- Não envie ao modelo dados sensíveis ou informações de clientes. Revise `src/knowledge.js` antes de divulgar.
-- O backend valida origens no navegador, tamanho das entradas e papéis das mensagens. **Isso não substitui autenticação nem proteção contra abuso.**
-- **Ainda não há limitação de requisições por IP distribuída, Turnstile ou WAF configurados pelo código.** Configure controles de rate limit/WAF no painel da Cloudflare antes de promover o serviço para tráfego público significativo.
-- A interface não persiste conversas em banco; o histórico fica na memória da aba e é enviado ao modelo em cada turno. As políticas de retenção e telemetria do provedor devem ser revisadas.
-- Modelos de linguagem podem produzir erros. Respostas profissionais devem ser tratadas como apresentação assistida, não comprovação documental.
+Com a conta Cloudflare autenticada e a configuração do ambiente revisada:
 
-## Próximos avanços possíveis
+```bash
+cd clever-ai
+npx wrangler deploy
+```
 
-Memória mais longa com resumo de sessão, recuperação seletiva de conhecimento, métricas de uso agregadas sem conteúdo de conversa, testes automatizados de qualidade de respostas e defesa contra abuso.
+O serviço expõe um endpoint de verificação em `GET /health` e a interface de conversa em `POST /api/chat`. Após a publicação, `ai-config.js` deve apontar para o endpoint autorizado. A interface do portfólio não hospeda o modelo de linguagem.
+
+## Segurança, privacidade e operação
+
+O conteúdo em `src/knowledge.js` foi pensado para divulgação pública e deve ser revisado sempre que houver atualização da trajetória profissional. Dados de clientes, credenciais, documentos internos e detalhes de projetos sujeitos a confidencialidade não pertencem a essa base.
+
+As validações de origem, tamanho de mensagem e papéis ajudam a controlar entradas, mas não substituem autenticação, rate limiting e proteção contra abuso. Antes de ampliar o tráfego, é importante verificar as regras de WAF e os limites de requisição efetivamente configurados na Cloudflare.
+
+O frontend mantém o histórico durante a sessão de navegação e o encaminha com as mensagens subsequentes. A aplicação não implementa persistência própria em banco de dados para as conversas. As condições de retenção e observabilidade do provedor devem ser verificadas separadamente.
+
+## Evoluções previstas
+
+Os próximos pontos de atenção são aprimorar os testes de qualidade das respostas, fortalecer limites de consumo, observar falhas sem armazenar conteúdo desnecessário das conversas e tornar as recomendações de projetos mais consistentes.
+
+O assistente é uma camada de apresentação do portfólio, não um canal oficial de atendimento nem uma fonte independente de comprovação de experiência.
